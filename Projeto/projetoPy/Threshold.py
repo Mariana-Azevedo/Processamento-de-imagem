@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib import pyplot as plt
 
 
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
 
 def showImage(img):
     imgMPLIB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -110,6 +110,6 @@ def showSingleImage(img, title, size):
     axis.set_title(title, fontdict = {'fontsize': 22, 'fontweight': 'medium'})
     plt.show()
 
-svbr_img = cv2.imread("book.jpg")
+svbr_img = cv2.imread("clarice.jpg")
 svbr_img = cv2.cvtColor(svbr_img, cv2.COLOR_BGR2RGB)
 showSingleImage(svbr_img, "SVBR", (2, 1))

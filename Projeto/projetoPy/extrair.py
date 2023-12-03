@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 from matplotlib import pyplot as plt
 import pytesseract as pt
 
-pt.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+pt.pytesseract.tesseract_cmd = r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
 
-img = cv2.imread('Projeto\phone.jpg')
+img = cv2.imread('Projeto\erosao.jpg')
 boxes = pt.image_to_boxes(img, lang='por')
 imH, imW,_ = img.shape
 

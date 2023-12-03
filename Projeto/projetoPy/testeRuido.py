@@ -4,6 +4,8 @@ import pytesseract
 import matplotlib.pyplot as plt
 import random
 from matplotlib import pyplot as plt
+from PIL import Image
+import math
 
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
@@ -62,26 +64,40 @@ def showMultipleImages(imgsArray, titlesArray, size, x, y):
                 yId += 1
     plt.show()
 
-def add_noise(img): 
+def moire(source, target, angle, distance, offsetx = 2, offsety = 2):
 
-    row , col = img.shape 
+    #imagem de entrada
+    img = Image.open(source)
+    pm = img.load()
+    # imagem de saída (usando a mesma para gerar sobreposição)
+    imgout = Image.open(source)
+    pmout = imgout.load()
 
-    number_of_pixels = random.randint(2000, 25000) 
-    for i in range(number_of_pixels): 
-        y_coord=random.randint(0, row - 1) 
-        x_coord=random.randint(0, col - 1) 
-        img[y_coord][x_coord] = 255
+    # valores para as transformações    
+    cosseno = math.cos(angle)
+    seno = math.sin(angle)
+    # distância em cada eixo
+    dx = distance * cosseno 
+    dy = distance * seno
 
-    number_of_pixels = random.randint(2000 , 25000) 
-    for i in range(number_of_pixels): 
-        y_coord=random.randint(0, row - 1) 
-        x_coord=random.randint(0, col - 1) 
-        img[y_coord][x_coord] = 0
+    for x in range(0, img.size[0], offsetx):
+        for y in range(0, img.size[1], offsety):
+            # calcula coordenada transformada (rotação + deslocamento)
+            x2, y2 = dx + math.floor(x * cosseno - y * seno), dy + math.floor(x * seno + y * cosseno)
+            # ajusta valores fora da imagem (como se a mesma repetisse infinitamente)
+            if x2 < 0:
+                x2 = img.size[0] + x2
+            elif x2 >= img.size[0]:
+                x2 = x2 - img.size[0]
+            if y2 < 0:
+                y2 = img.size[1] + y2
+            elif y2 >= img.size[1]:
+                y2 = y2 - img.size[1]
+            # desenha ponto transformado 
+            pmout[x, y] = pm[x2, y2] 
 
-    return img
-
-img = cv2.imread('Projeto/pixar.jpg',  cv2.IMREAD_GRAYSCALE) 
-#cv2.imwrite('Projeto/Oteste.jpg', add_noise(img))
+    # salva a imagem
+    imgout.save(target)
 
 def showImageGrid(img, title):
     fig, axis = plt.subplots()
@@ -109,14 +125,14 @@ def plotTwoImageHorizontal(img):
 def main():
     img_path = "Projeto/phone.jpg"
     img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
-    img_with_noise = add_noise(img)
+    #img_with_noise = add_noise(img)
     
     # Salva a imagem com ruído
     #cv2.imwrite('Projeto/phone_with_noise.jpg', img_with_noise)
 
     # Passa o caminho da imagem para plotTwoImageHorizontal
-    plotTwoImageHorizontal(img_path)
-
+    img = moire(r'Pojeto\pixar.jpg', r'linhas-output-1.png', math.pi / 4, 0, 1, 1)
+    #plotTwoImageHorizontal(img_path)
 
     plotTwoImageHorizontal(img)
     

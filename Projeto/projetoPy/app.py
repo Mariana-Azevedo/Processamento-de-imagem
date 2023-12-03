@@ -6,9 +6,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 #img = cv2.imread("book.jpg")
 
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
 
-img = cv2.imread("Projeto\ImagemRaiox.jpg") 
+img = cv2.imread("Projeto\clarice.jpg") 
 img = cv2.resize(img, None, fx=0.75, fy=0.75) 
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) 
 
